@@ -1,0 +1,55 @@
+---
+title: "Discussion Section"
+author: "BJ"
+format: html
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+library(here)
+library(tidyverse)
+library(stars)
+library(sf)
+library(tmap)
+library(grDevices)
+```
+
+```{r}
+ei_points <- sf::read_sf(here::here("data", "easter_island", "ei_points.gpkg"))
+volcanoes <- subset(ei_points, type == "volcano")
+ei_elev <- stars::read_stars(here::here("data", "easter_island", "ei_elev.tif"))
+ei_borders <- sf::read_sf(here::here("data", "easter_island", "ei_border.gpkg"))
+ei_roads <- sf::read_sf(here::here("data", "easter_island", "ei_roads.gpkg"))
+```
+
+
+## 3. Your Task
+
+Now, to meet this week’s learning objectives, your task:
+
+Create a map of Easter Island
+Create a map of Easter Island and
+
+1. denote the island’s borders and continuous elevation
+2. denote the island’s volcanoes and roads
+3. play with the color palette and essential map elements
+Create an interactive map of Easter Island
+
+```{r}
+
+tm_shape(ei_elev) +
+  tm_raster(style = "cont",
+            palette = c("seagreen", "grey"),
+            title = "Elevation (m)") + 
+  tm_shape(ei_borders) + 
+  tm_borders() +
+  tm_shape(ei_roads) +
+  tm_lines() +
+  tm_layout(main.title = "Easter Islands",
+          bg.color = "cadetblue") +
+  tm_scale_bar() +
+  tm_compass(position = c("right", "top"))
+```
+
